@@ -90,22 +90,115 @@ def kwiyandikisha(email, password):
             None
         )
 
-    except Exception as e:
-        print("Signup error:", str(e))
-        return (
-            "Kwiyandikisha ntibyashobotse. Reba email yawe, "
-            "cyangwa niba konti isanzwe ihari.",
-            None,
-            None
+                    type="password"
+                )
+                login_btn = gr.Button(
+                    "Injira",
+                    variant="primary"
+                )
+                logout_btn = gr.Button("Sohoka")
+
+        auth_status = gr.Markdown(
+            "Iyandikishe cyangwa winjire kugira ngo ukomeze."
         )
 
+    with gr.Tab("🌾 Umujyanama w'ubuhinzi"):
+        with gr.Row():
+            with gr.Column(scale=6, elem_classes=["panel"]):
+                gr.Markdown("## 🧑🏽‍🌾 Tubwire ikibazo cyawe")
 
-def kwinjira(email, password):
-    if not email or not password:
-        return (
-            "Andika email n'ijambo ry'ibanga.",
-            None, None, None, "Nta biganiro byafunguwe."
+                igihingwa = gr.Textbox(
+                    label="🌿 Igihingwa",
+                    placeholder="Urugero: Ibigori, ibishyimbo..."
+                )
+                aho = gr.Textbox(
+                    label="📍 Aho uhingira",
+                    placeholder="Urugero: Gatsibo, Nyagihanga"
+                )
+                ikibazo = gr.Textbox(
+                    label="💬 Ikibazo cy'ubuhinzi",
+                    placeholder="Sobanura ikibazo wabonye...",
+                    lines=4
+                )
+                ifoto = gr.Image(
+                    label="📷 Ifoto y'igihingwa (si ngombwa)",
+                    type="pil"
+                )
+                advice_btn = gr.Button(
+                    "🌱 Mpa inama",
+                    variant="primary",
+                    elem_classes=["primary-button"]
+                )
+
+            with gr.Column(scale=5, elem_classes=["panel"]):
+                gr.Markdown("## 🌾 Inama ugenewe")
+                answer_box = gr.Markdown(
+                    "Inama yawe izagaragara hano."
+                )
+
+        gr.Markdown("## 💬 Ibiganiro wabitswe")
+        history_box = gr.Markdown(
+            "Injira muri konti yawe kugira ngo urebe ibiganiro."
         )
+
+    signup_btn.click(
+        fn=kwiyandikisha,
+        inputs=[signup_email, signup_password],
+        outputs=[auth_status, token_state, user_state]
+    )
+
+    login_btn.click(
+        fn=kwinjira,
+        inputs=[login_email, login_password],
+        outputs=[
+            auth_status, token_state, user_state,
+            conversation_state, history_box
+        ]
+    )
+
+    logout_btn.click(
+        fn=gusohoka,
+        inputs=[],
+        outputs=[
+            auth_status, token_state, user_state,
+            conversation_state, history_box
+        ]
+    )
+
+    advice_btn.click(
+        fn=tanga_inama,
+        inputs=[
+            igihingwa, aho, ikibazo, ifoto,
+            token_state, user_state, conversation_state, history_box
+        ],
+        outputs=[answer_box, history_box, conversation_state]
+    )
+
+    gr.Markdown("""
+    ---
+    <div style="text-align:center; color:#45634f;">
+        <b>AgriNova AI</b> 🌱<br>
+        Ikoranabuhanga rifasha ubuhinzi gutera imbere.
+        <br><small>
+        Inama zitangwa na AI zishobora kutaba zuzuye.
+        Ku kibazo gikomeye, baza umuhanga mu buhinzi.
+        </small>
+    </div>
+    """)
+
+
+if __name__ == "__main__":
+    app.launch(
+        server_name="0.0.0.0",
+        server_port=int(os.environ.get("PORT", 7860)),
+        theme=gr.themes.Soft(
+            primary_hue="green",
+            secondary_hue="lime",
+            neutral_hue="slate"
+        ),
+        css=CSS
+    )
+
 
     try:
         client = get_supabase()
