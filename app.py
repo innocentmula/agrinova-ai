@@ -1,96 +1,169 @@
 import os
-from datetime import datetime, timezone
 
 import gradio as gr
 from google import genai
-from supabase import create_client
-
-
-SUPABASE_URL = os.getenv("SUPABASE_URL")
-SUPABASE_KEY = os.getenv("SUPABASE_KEY")
-GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
-
-
-def get_supabase(token=None):
-    if not SUPABASE_URL or not SUPABASE_KEY:
-        raise ValueError("Supabase ntirashyirwaho neza muri Render.")
-
-    client = create_client(SUPABASE_URL, SUPABASE_KEY)
-    if token:
-        client.postgrest.auth(token)
-    return client
-
 
 CSS = """
-:root { --agri-green: #176b45; --agri-dark: #103d2b; --agri-mint: #eaf6ed; }
 .gradio-container {
-    max-width: 1220px !important; margin: auto !important;
-    background: #f4f8f3 !important; font-family: Inter, ui-sans-serif, system-ui, sans-serif !important;
+    max-width: 1120px !important;
+    margin: auto !important;
+    background: #f4f8f2 !important;
+    font-family: Inter, system-ui, sans-serif !important;
 }
-body { background: #f4f8f3 !important; }
 #hero {
-    background: radial-gradient(circle at 85% 15%, rgba(188,235,145,.25), transparent 30%),
-                linear-gradient(125deg, #103d2b 0%, #176b45 58%, #328454 100%);
-    color: #fff; padding: 34px 30px; border-radius: 26px; text-align: left;
-    margin: 8px 0 22px; box-shadow: 0 14px 36px rgba(16,61,43,.15); overflow: hidden;
+    background: linear-gradient(125deg, #103d2b, #26734d);
+    color: white;
+    padding: 30px 24px;
+    border-radius: 22px;
+    text-align: center;
+    margin: 8px 0 20px;
 }
-#hero .hero-inner { display:flex; align-items:center; gap:20px; max-width:100%; }
-#hero .brand-mark { display:flex; align-items:center; justify-content:center; width:76px; height:76px;
-    border-radius:22px; background:rgba(255,255,255,.14); border:1px solid rgba(255,255,255,.24); font-size:42px; flex-shrink:0; }
-#hero h1 { color:#fff !important; font-size:clamp(30px,4vw,46px) !important; line-height:1.05 !important; margin:0 0 9px !important; letter-spacing:-1px; }
-#hero p { color:#e4f5e8 !important; margin:5px 0 !important; font-size:15px; }
-#hero .eyebrow { color:#c5ef9e; text-transform:uppercase; letter-spacing:2px; font-size:11px; font-weight:800; margin-bottom:8px; }
-#hero .hero-chip { display:inline-block; margin-top:11px; border:1px solid rgba(255,255,255,.24); background:rgba(255,255,255,.1); padding:7px 11px; border-radius:999px; font-size:12px; }
+#hero h1 { color: white !important; font-size: clamp(30px, 5vw, 44px) !important; }
+#hero p { color: #e5f3e8 !important; }
 .panel {
-    background:#fff !important; border:1px solid #e1eae0 !important; border-radius:20px !important;
-    padding:20px !important; box-shadow:0 5px 18px rgba(28,70,42,.045);
+    background: white !important;
+    border: 1px solid #dce8da !important;
+    border-radius: 18px !important;
+    padding: 18px !important;
 }
-.section-title { color:#173d2b; font-weight:800; letter-spacing:-.3px; }
-.gradio-container .tab-nav { gap:8px; border-bottom:1px solid #dfe9df; margin-bottom:18px; }
-.gradio-container .tab-nav button { border-radius:12px 12px 0 0 !important; font-weight:700 !important; }
-.gradio-container input, .gradio-container textarea, .gradio-container select {
-    border-radius:12px !important; border-color:#dbe6da !important; background:#fcfefc !important;
+.primary-button {
+    background: #247447 !important;
+    color: white !important;
+    border-radius: 12px !important;
+    min-height: 50px !important;
+    font-weight: 700 !important;
 }
-.gradio-container input:focus, .gradio-container textarea:focus { border-color:#58a477 !important; box-shadow:0 0 0 3px rgba(46,139,87,.1) !important; }
-.gradio-container button { border-radius:12px !important; font-weight:700 !important; }
-.primary-button { background:linear-gradient(135deg,#176b45,#2c8a55) !important; color:#fff !important; border:0 !important; min-height:48px !important; box-shadow:0 5px 12px rgba(23,107,69,.18); }
-.primary-button:hover { filter:brightness(1.04); }
-#auth-status { background:#eff8ef; border:1px solid #d7ead8; border-radius:14px; padding:12px 15px; }
-#answer-panel { background:linear-gradient(180deg,#fff 0%,#fbfefb 100%) !important; border:1px solid #dce9dc !important; border-radius:20px !important; padding:22px !important; min-height:260px; }
-#history-panel { background:#fff !important; border:1px solid #e1eae0 !important; border-radius:18px !important; padding:18px !important; }
-#footer-note { color:#647b69; text-align:center; font-size:12px; padding:16px 10px 4px; }
-footer { display:none !important; }
-@media (max-width: 650px) {
-    #hero { padding:22px 17px; border-radius:20px; }
-    #hero .hero-inner { align-items:flex-start; gap:13px; }
-    #hero .brand-mark { width:54px; height:54px; border-radius:16px; font-size:30px; }
-    #hero p { font-size:13px; }
-    .panel { padding:14px !important; }
-}
+footer { display: none !important; }
 """
 
+def tanga_inama(igihingwa, aho, ikibazo, ifoto):
+    api_key = os.getenv("GEMINI_API_KEY")
+    if not api_key:
+        return (
+            "### ⚠️ Gemini API key ntiyabonetse\n"
+            "Shyira GEMINI_API_KEY muri Environment Variables za Render."
+        )
 
-def kwiyandikisha(email, password):
-    if not email or not email.strip() or not password:
-        return "Andika email n'ijambo ry'ibanga.", None, None
-
-    if len(password) < 8:
-        return "Ijambo ry'ibanga rigomba kugira nibura inyuguti 8.", None, None
+    if not ikibazo or not ikibazo.strip():
+        return "### ✍️ Andika ikibazo\nSobanura ikibazo wabonye ku gihingwa cyawe."
 
     try:
-        client = get_supabase()
-        result = client.auth.sign_up({
-            "email": email.strip(),
-            "password": password,
-        })
+        client = genai.Client(api_key=api_key)
+        prompt = f"""
+Uri AgriNova AI, umujyanama w'ubuhinzi ufasha abahinzi bo mu Rwanda.
+Subiza mu Kinyarwanda cyumvikana kandi cyoroshye gukurikiza.
 
-        if result.session and result.user:
-            return (
-                "Konti yakozwe neza kandi winjiye muri AgriNova AI.",
-                result.session.access_token,
-                str(result.user.id),
+Amakuru y'umuhinzi:
+- Igihingwa: {igihingwa.strip() if igihingwa else 'Nticyavuzwe'}
+- Aho aherereye: {aho.strip() if aho else 'Ntihavuzwe'}
+- Ikibazo: {ikibazo.strip()}
+
+Tanga igisubizo gitondetse:
+1. Impamvu zishoboka z'ikibazo.
+2. Ibyo umuhinzi yakora ubu.
+3. Uburyo bwo gukumira ko ikibazo cyongera kubaho.
+4. Igihe agomba kugisha inama umuhanga mu buhinzi.
+
+Ntukemeze indwara udafitiye ibimenyetso bihagije.
+Ntugire umuti cyangwa ingano yawo uhamya udafite amakuru ahagije.
+Niba amakuru adahagije, baza ibibazo bisobanutse.
+Niba hari ifoto, sobanura gusa ibimenyetso bigaragara kuri yo.
+Ntuhimbe amakuru ya NISR cyangwa RAB.
+"""
+        contents = [prompt]
+        if ifoto is not None:
+            contents.append(ifoto)
+
+        response = client.models.generate_content(
+            model="gemini-2.5-flash",
+            contents=contents,
+        )
+        answer = getattr(response, "text", None)
+        if answer and answer.strip():
+            return answer.strip()
+        return "Ntabwo habonetse igisubizo. Ongera ugerageze."
+    except Exception as error:
+        print("AgriNova AI error:", repr(error))
+        return (
+            "### ⚠️ Habaye ikibazo mu gutanga inama\n"
+            "Ongera ugerageze nyuma gato. Niba bikomeje, genzura GEMINI_API_KEY "
+            "n'uko Gemini API iri gukora."
+        )
+
+
+with gr.Blocks(
+    title="AgriNova AI | Umujyanama w'Ubuhinzi",
+    theme=gr.themes.Soft(
+        primary_hue="green",
+        secondary_hue="lime",
+        neutral_hue="slate",
+    ),
+    css=CSS,
+) as app:
+    gr.HTML(
+        """
+        <div id="hero">
+            <div style="font-size:46px;">🌱</div>
+            <h1>AgriNova AI</h1>
+            <p><b>Umujyanama w'ubuhinzi mu Kinyarwanda</b></p>
+            <p>Andika ikibazo cyangwa wohereze ifoto y'igihingwa kugira ngo ubone ubufasha.</p>
+        </div>
+        """
+    )
+
+    with gr.Row():
+        with gr.Column(scale=6, elem_classes=["panel"]):
+            gr.Markdown("## 🧑🏽‍🌾 Tubwire ibijyanye n'igihingwa cyawe")
+            igihingwa = gr.Textbox(
+                label="🌿 Igihingwa",
+                placeholder="Urugero: Ibigori, ibishyimbo, imyumbati...",
+            )
+            aho = gr.Textbox(
+                label="📍 Aho uhingira",
+                placeholder="Urugero: Huye, Gatsibo, Nyagihanga...",
+            )
+            ikibazo = gr.Textbox(
+                label="💬 Ikibazo cy'ubuhinzi",
+                placeholder="Sobanura ibimenyetso wabonye n'igihe byatangiriye...",
+                lines=5,
+            )
+            ifoto = gr.Image(
+                label="📷 Ifoto y'igihingwa (si ngombwa)",
+                type="pil",
+            )
+            buto = gr.Button(
+                "🌱 Mpa inama",
+                variant="primary",
+                elem_classes=["primary-button"],
+            )
+            gr.Markdown("<small>Ifoto si ngombwa. Ntushyiremo amakuru y'ibanga.</small>")
+
+        with gr.Column(scale=5, elem_classes=["panel"]):
+            gr.Markdown("## 🌾 Inama ugenewe")
+            igisubizo = gr.Markdown(
+                "Inama zawe zizagaragara hano umaze gukanda **Mpa inama**."
             )
 
-        return (
-            "Konti yakozwe. Reba email yawe wemeze konti, "
-            "hanyuma winjire ukoresheje email n'ijambo ry'ibanga.",
+    buto.click(
+        fn=tanga_inama,
+        inputs=[igihingwa, aho, ikibazo, ifoto],
+        outputs=igisubizo,
+    )
+
+    gr.Markdown(
+        """
+        ---
+        <div style="text-align:center; color:#45634f;">
+            <b>AgriNova AI</b> 🌱<br>
+            Ikoranabuhanga rifasha ubuhinzi gutera imbere.
+            <br><small>Inama za AI zishobora kutaba zuzuye kandi si isuzuma ryemewe.
+            Ku kibazo gikomeye, baza umuhanga mu buhinzi.</small>
+        </div>
+        """
+    )
+
+if __name__ == "__main__":
+    app.launch(
+        server_name="0.0.0.0",
+        server_port=int(os.environ.get("PORT", 7860)),
+    )
