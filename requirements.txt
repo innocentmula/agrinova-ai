@@ -1,3 +1,5 @@
 gradio
 google-genai
 Pillow
+
+# AgriNova AI dependencies
