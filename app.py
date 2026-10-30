@@ -117,6 +117,26 @@ def ganira(history, message, igihingwa, akarere, ifoto):
         updated = history + [{"role":"user","content":message},{"role":"assistant","content":answer}]
         return updated, updated, ""
 
+    # Yakira aho umuhinzi aherereye nubwo amateka ya Gradio yaba atagarutse.
+    ubutumwa_aho = message.lower().strip()
+    ni_aho_ahinga = (
+        ("akarere" in ubutumwa_aho and "umurenge" in ubutumwa_aho)
+        or ("muhanga" in ubutumwa_aho and "nyamabuye" in ubutumwa_aho)
+    )
+    if ni_aho_ahinga:
+        answer = (
+            "Murakoze! Ubu tumenye ko uhinga mu **Karere ka Muhanga, Umurenge wa Nyamabuye**. "
+            "Ibyo ni intangiriro nziza, ariko ntibihagije ngo twemeze igihingwa gikwiye umurima wawe. "
+            "Hakenewe no kumenya ubutaka, amazi n'isoko.\\n\\n"
+            "**Ikibazo gikurikiraho:** Mu murima wawe, ufite amazi yo kuhira mu gihe imvura ibaye nke, "
+            "cyangwa wishingikiriza ku mvura gusa?\\n\\n"
+            "**Inkomoko y'amakuru:** Nta nyandiko yihariye ya RAB/NISR muri data dufite yemeza igihingwa gikwiye uwo murima.\\n"
+            "**Urwego rw'amakuru:** Ruracyakeneye kugenzurwa n'umukozi w'ubuhinzi.\\n"
+            "**Icyitonderwa:** Akarere n'umurenge ntibisimbura isuzuma ry'ubutaka, amazi n'isoko."
+        )
+        updated = history + [{"role":"user","content":message},{"role":"assistant","content":answer}]
+        return updated, updated, ""
+
     # Komeza ikiganiro cyo guhitamo igihingwa utarinze guhamagara Gemini.
     # Iyo umuhinzi amaze gutanga akarere n'umurenge, baza ikibazo kimwe gikurikira.
     ubutumwa_bwabanje = " ".join(
