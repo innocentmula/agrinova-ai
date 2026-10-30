@@ -233,10 +233,25 @@ Wibuke kurangiza igisubizo n'imitwe itatu isabwa: Inkomoko y'amakuru, Urwego rw'
         if ifoto is not None:
             contents.append(ifoto)
         # Igihe ntarengwa cya request ni amasegonda 20; ntitugumisha umuhinzi ategereje retries nyinshi.
-        response = client.models.generate_content(
-            model="gemini-3.8-flash",
-            contents=contents
-        )
+        # Gerageza model isanzwe; iyo iri ku gitutu, gerageza indi model izwiho gukora.
+        try:
+            response = client.models.generate_content(
+                model="gemini-3.8-flash",
+                contents=contents
+            )
+        except Exception as primary_error:
+            primary_text = str(primary_error).lower()
+            can_fallback = any(term in primary_text for term in (
+                "503", "unavailable", "high demand", "429", "resource_exhausted",
+                "rate limit", "500", "502", "504", "temporarily"
+            ))
+            if not can_fallback:
+                raise
+            print("AgriNova: primary Gemini model busy; trying gemini-2.5-flash")
+            response = client.models.generate_content(
+                model="gemini-2.5-flash",
+                contents=contents
+            )
         answer = response.text or "Ntabwo nabashije kubona igisubizo. Ongera ugerageze."
     except Exception as e:
         print(f"AgriNova Gemini error: {type(e).__name__}: {e}")
