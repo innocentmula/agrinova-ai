@@ -34,7 +34,7 @@ Ntuhimbe imibare, amakuru y'ikirere, cyangwa amabwiriza y'imiti. Niba amakuru ad
         if ifoto is not None:
             contents.append(ifoto)
         response = client.models.generate_content(
-            model="gemini-2.5-flash",
+            model="gemini-3.8-flash",
             contents=contents
         )
         return response.text or "Ntabwo nabashije kubona igisubizo. Ongera ugerageze."
