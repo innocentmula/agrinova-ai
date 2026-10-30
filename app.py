@@ -148,7 +148,9 @@ ntutange umubare. Baza izina ry'imbuto cyangwa usabe ifoto y'ipaki yayo.
 Wibuke kurangiza igisubizo n'imitwe itatu isabwa: Inkomoko y'amakuru, Urwego rw'amakuru, Icyitonderwa."""
 
         contents = [prompt]
-        if ifoto is not None and not history:
+        # Ohereza ifoto igihe cyose iriho, n'iyo ikiganiro cyaba cyaratangiye.
+        # Ibi bituma umuhinzi ashobora kongeramo ifoto mu butumwa bukurikiyeho.
+        if ifoto is not None:
             contents.append(ifoto)
         response = None
         last_error = None
