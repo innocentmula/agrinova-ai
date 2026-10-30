@@ -3,6 +3,7 @@ import time
 import json
 import gradio as gr
 from google import genai
+from google.genai import types
 
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 
@@ -183,7 +184,10 @@ def ganira(history, message, igihingwa, akarere, ifoto):
         history = history + [{"role":"assistant","content":"GEMINI_API_KEY ntiyashyizwe muri Render. Nyabuneka genzura Environment Variables."}]
         return history, history, ""
     try:
-        client = genai.Client(api_key=GEMINI_API_KEY)
+        client = genai.Client(
+            api_key=GEMINI_API_KEY,
+            http_options=types.HttpOptions(timeout=20000)
+        )
         transcript = []
         for item in history:
             role = "Umuhinzi" if item["role"] == "user" else "AgriNova AI"
@@ -214,30 +218,11 @@ Wibuke kurangiza igisubizo n'imitwe itatu isabwa: Inkomoko y'amakuru, Urwego rw'
         # Ibi bituma umuhinzi ashobora kongeramo ifoto mu butumwa bukurikiyeho.
         if ifoto is not None:
             contents.append(ifoto)
-        response = None
-        last_error = None
-        for attempt in range(4):
-            try:
-                response = client.models.generate_content(
-                    model="gemini-3.8-flash",
-                    contents=contents
-                )
-                last_error = None
-                break
-            except Exception as e:
-                last_error = e
-                error_text = str(e).lower()
-                temporary_error = any(term in error_text for term in (
-                    "503", "unavailable", "high demand",
-                    "429", "resource_exhausted", "rate limit",
-                    "500", "502", "504", "temporarily"
-                ))
-                if not temporary_error or attempt == 3:
-                    raise
-                time.sleep(2 ** attempt)
-
-        if last_error is not None:
-            raise last_error
+        # Igihe ntarengwa cya request ni amasegonda 20; ntitugumisha umuhinzi ategereje retries nyinshi.
+        response = client.models.generate_content(
+            model="gemini-3.8-flash",
+            contents=contents
+        )
         answer = response.text or "Ntabwo nabashije kubona igisubizo. Ongera ugerageze."
     except Exception as e:
         print(f"AgriNova Gemini error: {type(e).__name__}: {e}")
