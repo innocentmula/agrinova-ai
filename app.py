@@ -57,12 +57,12 @@ def ganira(history, message, igihingwa, akarere, ifoto):
     # Igisubizo gihamye ku kibazo rusange cy'igihe ibigori bimara ngo byere.
     # Ibi birinda Gemini gutanga imibare idafite isoko cyangwa kwihimbira akarere.
     ikibazo_gito = message.lower()
-    amagambo_y'igihe = ("bimara igihe", "igihe bimara", "ngo byere", "igihe ibigori", "byera ryari")
-    ni_ikibazo_cy'igihe = any(ijambo in ikibazo_gito for ijambo in amagambo_y'igihe)
+    amagambo_yigihe = ("bimara igihe", "igihe bimara", "ngo byere", "igihe ibigori", "byera ryari")
+    ni_ikibazo_cyigihe = any(ijambo in ikibazo_gito for ijambo in amagambo_yigihe)
     ni_ibigori = (igihingwa == "Ibigori") or any(x in ikibazo_gito for x in ("ibigori", "ikigori"))
     niba_nta_mateka = len(history) == 0
-    niba_nta_bwoko_bw'imbuto = not any(x in ikibazo_gito for x in ("hybrid", "imbuto ya", "izina ry'imbuto"))
-    if ni_ikibazo_cy'igihe and ni_ibigori and niba_nta_mateka and niba_nta_bwoko_bw'imbuto:
+    niba_nta_bwoko_bwimbuto = not any(x in ikibazo_gito for x in ("hybrid", "imbuto ya", "izina ry'imbuto"))
+    if ni_ikibazo_cyigihe and ni_ibigori and niba_nta_mateka and niba_nta_bwoko_bwimbuto:
         answer = (
             "Ibigori ntibyera mu gihe kimwe byose. Igihe bimara giterwa n'ubwoko bw'imbuto, "
             "ikirere n'uko byitaweho. Sinakwemeza umubare w'iminsi cyangwa amezi ntazi ubwoko "
