@@ -1,4 +1,5 @@
 import os
+import time
 import gradio as gr
 from google import genai
 
@@ -99,13 +100,52 @@ ntutange umubare. Baza izina ry'imbuto cyangwa usabe ifoto y'ipaki yayo."""
         contents = [prompt]
         if ifoto is not None and not history:
             contents.append(ifoto)
-        response = client.models.generate_content(
-            model="gemini-3.8-flash",
-            contents=contents
-        )
+        # Ongera ugerageze mu gihe Gemini ihuye n'ubwinshi bw'abayikoresha.
+        # Gutegereza 1, 2, na 4 seconds bigabanya gusubiramo request nyinshi icyarimwe.
+        response = None
+        last_error = None
+        for attempt in range(4):
+            try:
+                response = client.models.generate_content(
+                    model="gemini-3.8-flash",
+                    contents=contents
+                )
+                last_error = None
+                break
+            except Exception as e:
+                last_error = e
+                error_text = str(e).lower()
+                temporary_error = any(term in error_text for term in (
+                    "503", "unavailable", "high demand",
+                    "429", "resource_exhausted", "rate limit",
+                    "500", "502", "504", "temporarily"
+                ))
+                if not temporary_error or attempt == 3:
+                    raise
+                time.sleep(2 ** attempt)
+
+        if last_error is not None:
+            raise last_error
         answer = response.text or "Ntabwo nabashije kubona igisubizo. Ongera ugerageze."
     except Exception as e:
-        answer = "Habaye ikibazo mu kubona igisubizo cya AI. Ongera ugerageze. " + str(e)[:250]
+        print(f"AgriNova Gemini error: {type(e).__name__}: {e}")
+        error_text = str(e).lower()
+        temporary_error = any(term in error_text for term in (
+            "503", "unavailable", "high demand",
+            "429", "resource_exhausted", "rate limit",
+            "500", "502", "504", "temporarily"
+        ))
+        if temporary_error:
+            answer = (
+                "Serivisi ya AI iri kwakira ibyifuzo byinshi muri aka kanya. "
+                "Nagerageje kongera kohereza ikibazo ariko ntibyashobotse. "
+                "Tegereza akanya gato wongere ugerageze; ntukeneye gutangira ikiganiro bundi bushya."
+            )
+        else:
+            answer = (
+                "Habaye ikibazo mu kubona igisubizo cya AI. "
+                "Ongera ugerageze nyuma y'akanya. Niba bikomeje, tubimenyeshe."
+            )
     updated = history + [{"role":"user","content":message},{"role":"assistant","content":answer}]
     return updated, updated, ""
 
