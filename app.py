@@ -117,6 +117,29 @@ def ganira(history, message, igihingwa, akarere, ifoto):
         updated = history + [{"role":"user","content":message},{"role":"assistant","content":answer}]
         return updated, updated, ""
 
+    # Komeza ikiganiro cyo guhitamo igihingwa utarinze guhamagara Gemini.
+    # Iyo umuhinzi amaze gutanga akarere n'umurenge, baza ikibazo kimwe gikurikira.
+    ubutumwa_bwabanje = " ".join(
+        str(item.get("content", "")) for item in history if item.get("role") == "assistant"
+    ).lower()
+    ni_gukomeza_ihitamo = "uri mu kihe karere n'umurenge" in ubutumwa_bwabanje
+    if ni_gukomeza_ihitamo:
+        aho = (akarere or "").strip()
+        if not aho:
+            aho = message.strip()
+        answer = (
+            f"Murakoze kutubwira aho uhinga: **{aho}**. Ibyo biradufasha gutangira, "
+            "ariko ntibihagije ngo twemeze igihingwa gikwiye umurima wawe. "
+            "Ntiturabona ibipimo by'ubutaka cyangwa amakuru yihariye y'uwo murima.\\n\\n"
+            "**Ikibazo gikurikiraho:** Mu murima wawe, amazi ayageramo ate? "
+            "Ufite amazi yo kuhira mu gihe imvura ibaye nke, cyangwa wishingikiriza ku mvura gusa?\\n\\n"
+            "**Inkomoko y'amakuru:** Nta nyandiko yihariye ya RAB/NISR muri data dufite yemeza igihingwa gikwiye uwo murima.\\n"
+            "**Urwego rw'amakuru:** Ruracyakeneye kugenzurwa n'umukozi w'ubuhinzi.\\n"
+            "**Icyitonderwa:** Akarere n'umurenge ntibisimbura isuzuma ry'ubutaka, amazi n'isoko."
+        )
+        updated = history + [{"role":"user","content":message},{"role":"assistant","content":answer}]
+        return updated, updated, ""
+
     # Igisubizo gihamye ku kibazo rusange cy'igihe ibigori bimara ngo byere.
     ikibazo_gito = message.lower()
     amagambo_yigihe = ("bimara igihe", "igihe bimara", "ngo byere", "igihe ibigori", "byera ryari")
