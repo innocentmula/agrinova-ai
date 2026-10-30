@@ -53,6 +53,24 @@ def ganira(history, message, igihingwa, akarere, ifoto):
     history = history or []
     if not message or not message.strip():
         return history, history, ""
+
+    # Igisubizo gihamye ku kibazo rusange cy'igihe ibigori bimara ngo byere.
+    # Ibi birinda Gemini gutanga imibare idafite isoko cyangwa kwihimbira akarere.
+    ikibazo_gito = message.lower()
+    amagambo_y'igihe = ("bimara igihe", "igihe bimara", "ngo byere", "igihe ibigori", "byera ryari")
+    ni_ikibazo_cy'igihe = any(ijambo in ikibazo_gito for ijambo in amagambo_y'igihe)
+    ni_ibigori = (igihingwa == "Ibigori") or any(x in ikibazo_gito for x in ("ibigori", "ikigori"))
+    niba_nta_mateka = len(history) == 0
+    niba_nta_bwoko_bw'imbuto = not any(x in ikibazo_gito for x in ("hybrid", "imbuto ya", "izina ry'imbuto"))
+    if ni_ikibazo_cy'igihe and ni_ibigori and niba_nta_mateka and niba_nta_bwoko_bw'imbuto:
+        answer = (
+            "Ibigori ntibyera mu gihe kimwe byose. Igihe bimara giterwa n'ubwoko bw'imbuto, "
+            "ikirere n'uko byitaweho. Sinakwemeza umubare w'iminsi cyangwa amezi ntazi ubwoko "
+            "bw'imbuto wateye.\n\n"
+            "Waba uzi izina ry'imbuto wateye, cyangwa ufite ifoto y'ipaki yayo?"
+        )
+        updated = history + [{"role":"user","content":message},{"role":"assistant","content":answer}]
+        return updated, updated, ""
     if not GEMINI_API_KEY:
         history = history + [{"role":"assistant","content":"GEMINI_API_KEY ntiyashyizwe muri Render. Nyabuneka genzura Environment Variables."}]
         return history, history, ""
