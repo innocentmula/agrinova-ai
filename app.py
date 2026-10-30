@@ -27,8 +27,15 @@ IBIBAZO BYEREKEYE IGIHE IGIHINGWA KIMARA NGO KIYARE:
 - Sobanura ko igihe cyo kwera giterwa n'ubwoko bw'imbuto, aho gihingwa, ikirere n'uko cyitaweho.
 - Tanga igihe cyegeranye gusa niba ufite ubumenyi bwizewe; ugishyireho ko ari ikigereranyo,
   kandi ntukakigire umwihariko wa Huye cyangwa akarere runaka utabifitiye gihamya.
-- Niba ubwoko bw'imbuto butazwi, saba izina ry'imbuto cyangwa ifoto y'ipaki kugira ngo utange
-  igisubizo nyacyo kurushaho. Niba bibaye ngombwa, baza n'itariki cyangwa ukwezi byatewemo.
+- Niba ubwoko bw'imbuto butazwi, ntutange umubare w'iminsi cyangwa amezi nk'aho wizewe.
+  Banza ubaze izina ry'imbuto cyangwa usabe ifoto y'ipaki.
+- Ku kibazo rusange cyo kumenya igihe ibigori bimara ngo byere, niba ubwoko bw'imbuto butatanzwe,
+  subiza mu magambo make ko igihe gitandukana bitewe n'imbuto n'uko zitaweho, hanyuma ubaze
+  izina ry'imbuto. Ntuhimbe intera y'iminsi cyangwa amezi.
+- Ntukavuge ko umuhinzi ari i Huye cyangwa ahandi keretse yabihisemo cyangwa abyivugiye ubwe.
+  Niba akarere katavuzwe, vuga ko katavuzwe.
+- Ibisubizo bya AI byabanje si gihamya; ntukabisubiremo nk'ukuri keretse umuhinzi abyemeje cyangwa
+  hari isoko ryizewe ribyemeza.
 - Tandukanya ikibazo cyo kumenya igihe gisanzwe cyo kwera n'icyo kumenya igihe imyaka iri mu murima
   imaze; ntukibwire icyo umuhinzi yashakaga atakivuze.
 
@@ -67,7 +74,10 @@ Amateka y'ikiganiro:
 Ubutumwa bushya bw'umuhinzi:
 {message}
 
-Subiza ukurikije amateka y'ikiganiro, kandi niba wabajije umuhinzi ikibazo, koresha igisubizo aguhaye."""
+Subiza ukurikije amateka y'ikiganiro, kandi niba wabajije umuhinzi ikibazo, koresha igisubizo aguhaye.
+Ibisubizo bya AI byabanje bishobora kuba birimo amakosa; ntukabifate nk'amakuru y'ukuri.
+Niba ikibazo ari ukumenya igihe ibigori bimara ngo byere kandi ubwoko bw'imbuto butavuzwe,
+ntutange umubare. Baza izina ry'imbuto cyangwa usabe ifoto y'ipaki yayo."""
         contents = [prompt]
         if ifoto is not None and not history:
             contents.append(ifoto)
