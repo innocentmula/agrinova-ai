@@ -109,7 +109,7 @@ ntutange umubare. Baza izina ry'imbuto cyangwa usabe ifoto y'ipaki yayo."""
     updated = history + [{"role":"user","content":message},{"role":"assistant","content":answer}]
     return updated, updated, ""
 
-with gr.Blocks(title="AgriNova AI", theme=gr.themes.Soft(primary_hue="green"), css=CSS) as demo:
+with gr.Blocks(title="AgriNova AI") as demo:
     gr.HTML("""
     <div id="hero">
       <h1>🌱 AgriNova AI</h1>
@@ -124,7 +124,7 @@ with gr.Blocks(title="AgriNova AI", theme=gr.themes.Soft(primary_hue="green"), c
         )
         akarere = gr.Textbox(label="Akarere / Umurenge", placeholder="Urugero: Huye")
     ifoto = gr.Image(label="Ifoto y'igihingwa (ushobora kuyishyiraho mbere yo gutangira)", type="pil")
-    ibiganiro = gr.Chatbot(label="Ikiganiro na AgriNova AI", type="messages", height=420)
+    ibiganiro = gr.Chatbot(label="Ikiganiro na AgriNova AI", height=420)
     state = gr.State([])
     ikibazo = gr.Textbox(
         label="Andika ikibazo cyangwa igisubizo ku byo AI yakubajije",
@@ -146,4 +146,4 @@ with gr.Blocks(title="AgriNova AI", theme=gr.themes.Soft(primary_hue="green"), c
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", "10000"))
-    demo.launch(server_name="0.0.0.0", server_port=port)
+    demo.launch(server_name="0.0.0.0", server_port=port, theme=gr.themes.Soft(primary_hue="green"), css=CSS)
