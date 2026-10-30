@@ -92,6 +92,31 @@ def ganira(history, message, igihingwa, akarere, ifoto):
     if not message or not message.strip():
         return history, history, ""
 
+    # Igisubizo cy'ibanze ku muhinzi utaramenya igihingwa yahinga.
+    ikibazo_gito = message.lower().strip()
+    amagambo_yo_guhitamo = (
+        "sinzi icyo nahinga", "ntazi icyo nahinga", "sinzi icyo nahinga", 
+        "sinzi ngo nahinga", "ntazi ngo nahinga", "ndashaka guhinga gusa",
+        "nahinga iki", "igihingwa nahinga", "icyo nahinga"
+    )
+    if any(ijambo in ikibazo_gito for ijambo in amagambo_yo_guhitamo):
+        answer = (
+            "Ni byiza kubanza guhitamo igihingwa gihuye n'ubutaka bwawe, amazi ufite, "
+            "igihembwe cy'ihinga n'isoko ryo kugurishaho. Ntibikwiye kuguhitiramo igihingwa "
+            "ntaramenya aho uhinga.\n\n"
+            "Urugero, ibigori, ibishyimbo, ibirayi, imboga cyangwa imyumbati bishobora kuba "
+            "amahitamo bitewe n'imiterere y'aho uhinga; si ukuvuga ko byose bikwiriye aho uri.\n\n"
+            "**Tubanze tumenye aho uhinga:** Uri mu kihe karere n'umurenge? Numbwira aho uhinga, "
+            "tuzareba amahitamo ashoboka n'ibyo tugomba kubanza kugenzura.\n\n"
+            "**Inkomoko y'amakuru:** Nta nyandiko yihariye ya RAB/NISR muri data dufite yemeza "
+            "igihingwa gikwiye umurima wawe; ni ubuyobozi rusange.\n"
+            "**Urwego rw'amakuru:** Ruracyakeneye kugenzurwa n'umukozi w'ubuhinzi.\n"
+            "**Icyitonderwa:** Ntugure imbuto cyangwa ngo uhitemo igihingwa ushingiye kuri aya makuru gusa; "
+            "hakenewe kumenya ubutaka, amazi n'isoko ryo kugurishaho."
+        )
+        updated = history + [{"role":"user","content":message},{"role":"assistant","content":answer}]
+        return updated, updated, ""
+
     # Igisubizo gihamye ku kibazo rusange cy'igihe ibigori bimara ngo byere.
     ikibazo_gito = message.lower()
     amagambo_yigihe = ("bimara igihe", "igihe bimara", "ngo byere", "igihe ibigori", "byera ryari")
