@@ -10,36 +10,56 @@ CSS = """
 #hero h1 {color:white!important}
 """
 
-def agrinova(igihingwa, akarere, ikibazo, ifoto):
-    if not ikibazo or not ikibazo.strip():
-        return "Andika ikibazo ufite ku gihingwa cyawe kugira ngo ngufashe."
-    if not GEMINI_API_KEY:
-        return "Ikibazo: GEMINI_API_KEY ntiyashyizwe muri Render. Nyabuneka genzura Environment Variables."
-    try:
-        client = genai.Client(api_key=GEMINI_API_KEY)
-        prompt = f"""
+SYSTEM_PROMPT = """
 Uri AgriNova AI, umujyanama w'ubuhinzi ufasha abahinzi bo mu Rwanda.
 Subiza mu Kinyarwanda cyumvikana, mu buryo bugufi kandi bufatika.
-Igihingwa: {igihingwa}
-Akarere: {akarere}
-Ikibazo cy'umuhinzi: {ikibazo}
-
-Tanga:
-1. Ibisobanuro bishoboka by'ikibazo (ntuvuge ko ari isuzuma ryizewe niba bidashoboka).
-2. Ibyo umuhinzi yakora ubu, mu ntambwe zoroshye.
-3. Igihe agomba kugisha inama agronome cyangwa umukozi wa RAB.
-Ntuhimbe imibare, amakuru y'ikirere, cyangwa amabwiriza y'imiti. Niba amakuru adahagije, baza ibibazo bisobanutse.
+Tanga impamvu zishoboka gusa, ntukemeze indwara utabifitiye gihamya.
+Ntuhimbe imibare, amakuru y'ikirere, ibipimo by'ubutaka cyangwa amabwiriza y'imiti.
+Ntuvuge ko akarere gafite ubutaka bwa aside nyinshi utabonye ibipimo.
+Niba amakuru adahagije, baza ikibazo kimwe cyangwa bibiri by'ingenzi.
+Jya ukurikiza igihingwa n'akarere umukoresha yahisemo. Niba ikibazo kivuga ikindi gihingwa,
+banza umubaze niba ashaka guhindura igihingwa, aho kwivanga.
+Mu gisubizo, tanga: impamvu zishoboka, icyo yakora ubu, n'igihe yakwiyambaza agronome/RAB.
 """
+
+def ganira(history, message, igihingwa, akarere, ifoto):
+    history = history or []
+    if not message or not message.strip():
+        return history, history, ""
+    if not GEMINI_API_KEY:
+        history = history + [{"role":"assistant","content":"GEMINI_API_KEY ntiyashyizwe muri Render. Nyabuneka genzura Environment Variables."}]
+        return history, history, ""
+    try:
+        client = genai.Client(api_key=GEMINI_API_KEY)
+        transcript = []
+        for item in history:
+            role = "Umuhinzi" if item["role"] == "user" else "AgriNova AI"
+            transcript.append(f"{role}: {item['content']}")
+        context = "\n".join(transcript[-12:])
+        prompt = f"""{SYSTEM_PROMPT}
+
+Igihingwa cyatoranyijwe: {igihingwa}
+Akarere/Umurenge: {akarere or 'Ntabwo kavuzwe'}
+
+Amateka y'ikiganiro:
+{context}
+
+Ubutumwa bushya bw'umuhinzi:
+{message}
+
+Subiza ukurikije amateka y'ikiganiro, kandi niba wabajije umuhinzi ikibazo, koresha igisubizo aguhaye."""
         contents = [prompt]
-        if ifoto is not None:
+        if ifoto is not None and not history:
             contents.append(ifoto)
         response = client.models.generate_content(
             model="gemini-3.8-flash",
             contents=contents
         )
-        return response.text or "Ntabwo nabashije kubona igisubizo. Ongera ugerageze."
+        answer = response.text or "Ntabwo nabashije kubona igisubizo. Ongera ugerageze."
     except Exception as e:
-        return "Habaye ikibazo mu kubona igisubizo cya AI. Ongera ugerageze nyuma gato. " + str(e)[:350]
+        answer = "Habaye ikibazo mu kubona igisubizo cya AI. Ongera ugerageze. " + str(e)[:250]
+    updated = history + [{"role":"user","content":message},{"role":"assistant","content":answer}]
+    return updated, updated, ""
 
 with gr.Blocks(title="AgriNova AI", theme=gr.themes.Soft(primary_hue="green"), css=CSS) as demo:
     gr.HTML("""
@@ -48,22 +68,29 @@ with gr.Blocks(title="AgriNova AI", theme=gr.themes.Soft(primary_hue="green"), c
       <p>Umufasha w'umuhinzi w'u Rwanda — inama z'ubuhinzi mu Kinyarwanda.</p>
     </div>
     """)
-    gr.Markdown("### Tubwire ikibazo ufite mu murima")
+    gr.Markdown("### Tangira ikiganiro ku kibazo ufite mu murima")
     with gr.Row():
         igihingwa = gr.Dropdown(
             ["Ibigori","Ibishyimbo","Ibirayi","Umuceri","Imyumbati","Ibindi"],
             label="Igihingwa", value="Ibigori"
         )
         akarere = gr.Textbox(label="Akarere / Umurenge", placeholder="Urugero: Huye")
+    ifoto = gr.Image(label="Ifoto y'igihingwa (ushobora kuyishyiraho mbere yo gutangira)", type="pil")
+    ibiganiro = gr.Chatbot(label="Ikiganiro na AgriNova AI", type="messages", height=420)
+    state = gr.State([])
     ikibazo = gr.Textbox(
-        label="Sobanura ikibazo cyawe",
-        placeholder="Urugero: Amababi y'ibigori yahindutse umuhondo...",
-        lines=4
+        label="Andika ikibazo cyangwa igisubizo ku byo AI yakubajije",
+        placeholder="Urugero: Ibigori bimaze ibyumweru 5 bitewe...",
+        lines=2
     )
-    ifoto = gr.Image(label="Ongeraho ifoto y'igihingwa (si ngombwa)", type="pil")
-    button = gr.Button("Shaka inama", variant="primary")
-    igisubizo = gr.Markdown(label="Inama za AgriNova AI")
-    button.click(agrinova, inputs=[igihingwa, akarere, ikibazo, ifoto], outputs=igisubizo)
+    with gr.Row():
+        button = gr.Button("Ohereza", variant="primary")
+        clear = gr.Button("Tangira ikiganiro gishya")
+    button.click(ganira, inputs=[state, ikibazo, igihingwa, akarere, ifoto],
+                 outputs=[ibiganiro, state, ikibazo])
+    ikibazo.submit(ganira, inputs=[state, ikibazo, igihingwa, akarere, ifoto],
+                   outputs=[ibiganiro, state, ikibazo])
+    clear.click(lambda: ([], [], ""), outputs=[ibiganiro, state, ikibazo])
     gr.Markdown(
         "Icyitonderwa: Inama za AI si isuzuma ryemejwe n'umuhanga. "
         "Ku kibazo gikomeye, ganira n'umukozi w'ubuhinzi cyangwa RAB."
