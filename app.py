@@ -93,6 +93,20 @@ def ganira(history, message, igihingwa, akarere, ifoto):
     if not message or not message.strip():
         return history, history, ""
 
+    # Subiza indamukanyo zisanzwe utahamagaye Gemini; zigomba guhita zisubizwa.
+    indamukanyo = message.lower().strip().strip(" .,!?;:")
+    amagambo_indamukanyo = {
+        "mwiriwe", "mwaramutse", "muraho", "bite", "amakuru", "mwaramutseho",
+        "mwiriweho", "hello", "hi", "good morning", "good afternoon"
+    }
+    if indamukanyo in amagambo_indamukanyo:
+        answer = (
+            "Mwiriwe neza! Nishimiye kuganira namwe. Ndi AgriNova AI, umufasha wanyu mu buhinzi.\\n\\n"
+            "Ni ikihe kibazo mufite ku gihingwa cyangwa ku murima wanyu uyu munsi?"
+        )
+        updated = history + [{"role":"user","content":message},{"role":"assistant","content":answer}]
+        return updated, updated, ""
+
     # Igisubizo cy'ibanze ku muhinzi utaramenya igihingwa yahinga.
     ikibazo_gito = message.lower().strip()
     amagambo_yo_guhitamo = (
