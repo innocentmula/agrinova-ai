@@ -6,12 +6,6 @@ from google import genai
 
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 
-CSS = """
-.gradio-container {max-width:1100px!important;background:#f3f8f2!important}
-#hero {background:linear-gradient(120deg,#103d2b,#23804d);color:white;padding:28px;border-radius:20px;margin-bottom:18px}
-#hero h1 {color:white!important}
-"""
-
 SYSTEM_PROMPT = """
 Uri AgriNova AI, umujyanama w'ubuhinzi ufasha abahinzi bo mu Rwanda.
 Subiza mu Kinyarwanda cyumvikana, mu buryo bugufi, busobanutse kandi bufatika.
@@ -199,41 +193,103 @@ Wibuke kurangiza igisubizo n'imitwe itatu isabwa: Inkomoko y'amakuru, Urwego rw'
     updated = history + [{"role":"user","content":message},{"role":"assistant","content":answer}]
     return updated, updated, ""
 
-with gr.Blocks(title="AgriNova AI") as demo:
-    gr.HTML("""
-    <div id="hero">
-      <h1>🌱 AgriNova AI</h1>
-      <p>Umufasha w'umuhinzi w'u Rwanda — inama z'ubuhinzi mu Kinyarwanda.</p>
-    </div>
-    """)
-    gr.Markdown("### Tangira ikiganiro ku kibazo ufite mu murima")
-    with gr.Row():
-        igihingwa = gr.Dropdown(
-            ["Ibigori","Ibishyimbo","Ibirayi","Umuceri","Imyumbati","Ibindi"],
-            label="Igihingwa", value="Ibigori"
-        )
-        akarere = gr.Textbox(label="Akarere / Umurenge", placeholder="Andika akarere cyangwa umurenge (si ngombwa)")
-    ifoto = gr.Image(label="Ifoto y'igihingwa (ushobora kuyishyiraho mbere yo gutangira)", type="pil")
-    ibiganiro = gr.Chatbot(label="Ikiganiro na AgriNova AI", height=420)
-    state = gr.State([])
-    ikibazo = gr.Textbox(
-        label="Andika ikibazo cyangwa igisubizo ku byo AI yakubajije",
-        placeholder="Urugero: Ibigori bimaze ibyumweru 5 bitewe...",
-        lines=2
+CSS = """
+.gradio-container {max-width:1500px!important;background:#f7f9f7!important;padding:0!important}
+body {background:#f7f9f7!important}
+#app-shell {gap:0!important;min-height:95vh}
+#sidebar {background:#123d2b!important;color:#fff!important;padding:22px!important;border-radius:0!important;min-height:95vh}
+#sidebar h1,#sidebar h2,#sidebar p,#sidebar label {color:#fff!important}
+#brand-mark {font-size:30px;font-weight:800;letter-spacing:-1px;color:#fff;margin-bottom:4px}
+#brand-sub {color:#d5e9dc;font-size:13px;line-height:1.5;margin-bottom:18px}
+#new-chat button {background:#ffffff!important;color:#17452f!important;border:0!important;font-weight:700!important}
+#main-panel {padding:24px 4%!important;max-width:1100px!important;margin:0 auto!important}
+#topbar {border-bottom:1px solid #e3e9e4;padding-bottom:14px;margin-bottom:16px}
+#topbar h2 {margin:0!important;color:#183d2b!important}
+#chat-area {background:transparent!important;border:0!important}
+#chatbot {border:0!important;background:transparent!important}
+#composer {border:1px solid #dce5de!important;border-radius:18px!important;background:white!important;padding:8px!important;box-shadow:0 5px 22px rgba(20,60,38,.06)!important}
+#composer textarea {border:0!important;box-shadow:none!important;background:transparent!important}
+#send-btn button {background:#176b43!important;color:white!important;border-radius:12px!important}
+#hint {color:#718078!important;font-size:12px!important;text-align:center!important}
+footer {display:none!important}
+@media (max-width: 760px) {
+ #sidebar {min-height:auto!important;padding:14px!important}
+ #main-panel {padding:14px 10px!important}
+ #app-shell {min-height:auto!important}
+}
+"""
+
+
+with gr.Blocks(title="AgriNova AI — Umufasha w'Ubuhinzi", theme=gr.themes.Soft(primary_hue="green"), css=CSS) as demo:
+    with gr.Row(elem_id="app-shell"):
+        with gr.Column(scale=1, min_width=245, elem_id="sidebar"):
+            gr.HTML("""
+            <div id="brand-mark">🌱 AgriNova AI</div>
+            <div id="brand-sub">Umufasha w'umuhinzi w'u Rwanda.<br>Ibibazo by'ubuhinzi, amafoto n'inama zishingiye ku makuru yizewe.</div>
+            """)
+            clear = gr.Button("＋  Tangira ikiganiro gishya", elem_id="new-chat")
+            gr.Markdown("### Ibyo urimo guhinga")
+            igihingwa = gr.Dropdown(
+                ["Ibigori","Ibishyimbo","Ibirayi","Umuceri","Imyumbati","Ibindi"],
+                label="Igihingwa", value="Ibigori"
+            )
+            akarere = gr.Textbox(
+                label="Akarere / Umurenge",
+                placeholder="Urugero: Huye (si ngombwa)"
+            )
+            gr.Markdown("### Ifoto y'igihingwa")
+            ifoto = gr.Image(
+                label="Ongeraho ifoto yo gusesengura",
+                type="pil",
+                height=190
+            )
+            gr.Markdown(
+                "<div style='font-size:12px;color:#d5e9dc;line-height:1.5'>"
+                "Inama za AI zifasha gufata icyemezo, ariko ntizisimbura isuzuma ry'umukozi w'ubuhinzi."
+                "</div>"
+            )
+        with gr.Column(scale=4, min_width=320, elem_id="main-panel"):
+            gr.HTML("""
+            <div id="topbar">
+              <h2>Ikiganiro cy'ubuhinzi</h2>
+              <div style="color:#718078;font-size:13px;margin-top:5px">
+                Baza ikibazo icyo ari cyo cyose kijyanye n'igihingwa cyawe.
+              </div>
+            </div>
+            """)
+            ibiganiro = gr.Chatbot(
+                label="",
+                height=540,
+                elem_id="chatbot",
+                placeholder="🌱 Muraho! Ndi AgriNova AI. Mbwira ikibazo ufite mu murima cyangwa shyiraho ifoto y'igihingwa."
+            )
+            state = gr.State([])
+            with gr.Row(elem_id="composer"):
+                ikibazo = gr.Textbox(
+                    label="",
+                    placeholder="Andika ubutumwa bwawe hano...",
+                    lines=2,
+                    max_lines=5,
+                    scale=8,
+                    container=False
+                )
+                button = gr.Button("Ohereza  ➤", variant="primary", elem_id="send-btn", scale=1)
+            gr.HTML("<div id='hint'>AgriNova AI • Ikoranabuhanga rifasha ubuhinzi bw'u Rwanda</div>")
+    button.click(
+        ganira,
+        inputs=[state, ikibazo, igihingwa, akarere, ifoto],
+        outputs=[ibiganiro, state, ikibazo]
     )
-    with gr.Row():
-        button = gr.Button("Ohereza", variant="primary")
-        clear = gr.Button("Tangira ikiganiro gishya")
-    button.click(ganira, inputs=[state, ikibazo, igihingwa, akarere, ifoto],
-                 outputs=[ibiganiro, state, ikibazo])
-    ikibazo.submit(ganira, inputs=[state, ikibazo, igihingwa, akarere, ifoto],
-                   outputs=[ibiganiro, state, ikibazo])
-    clear.click(lambda: ([], [], ""), outputs=[ibiganiro, state, ikibazo])
-    gr.Markdown(
-        "Icyitonderwa: Inama za AI si isuzuma ryemejwe n'umuhanga. "
-        "Ku kibazo gikomeye, ganira n'umukozi w'ubuhinzi cyangwa RAB."
+    ikibazo.submit(
+        ganira,
+        inputs=[state, ikibazo, igihingwa, akarere, ifoto],
+        outputs=[ibiganiro, state, ikibazo]
+    )
+    clear.click(
+        lambda: ([], [], ""),
+        outputs=[ibiganiro, state, ikibazo]
     )
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", "10000"))
-    demo.launch(server_name="0.0.0.0", server_port=port, theme=gr.themes.Soft(primary_hue="green"), css=CSS)
+    demo.launch(server_name="0.0.0.0", server_port=port)
