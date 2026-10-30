@@ -1,0 +1,107 @@
+{
+  "schema_version": "1.0",
+  "language": "rw",
+  "title": "AgriNova AI - Ubumenyi bw'ubuhinzi bushingiye kuri RAB",
+  "notice": "Iyi ni intangiriro y'ubumenyi. Ntisimbura amabwiriza yihariye y'umurima. Ntugahimbe ibipimo by'ifumbire, imiti, intera yo gutera cyangwa igihe cyo gutera.",
+  "sources": [
+    {
+      "id": "RAB_CROP_INNOVATION",
+      "organization": "Rwanda Agriculture and Animal Resources Development Board (RAB)",
+      "title": "Crop Innovation and Technology Transfer",
+      "url": "https://www.rab.gov.rw/agriculture-development/crop-innovation-tech-transfer",
+      "facts": [
+        "RAB ihuza ubushakashatsi ku bihingwa no kugeza ikoranabuhanga ku bahinzi.",
+        "RAB ikorana n'abakozi bashinzwe ubujyanama bw'ubuhinzi, abahugura abahinzi n'abafashamyumvire bo mu matsinda y'abahinzi.",
+        "RAB itegura inyandiko z'ubujyanama kandi igahugura abahinzi ku buhinzi bwiza."
+      ]
+    },
+    {
+      "id": "RAB_CEREALS",
+      "organization": "RAB",
+      "title": "Cereals Program",
+      "url": "https://www.rab.gov.rw/rw/amakuru-1/cereals-program",
+      "crops": ["Ibigori", "Umuceri", "Ingano", "Amasaka", "Barley"],
+      "facts": [
+        "Porogaramu y'ibinyampeke ya RAB ikora ubushakashatsi ku bigori, umuceri, ingano, barley n'amasaka.",
+        "Ubushakashatsi ku bigori bwibanda no ku kwihanganira amapfa, Fall Armyworm, Maize Lethal Necrosis n'indwara zimwe zo ku mababi."
+      ],
+      "limits": "Ibyibandwaho mu bushakashatsi si amabwiriza yo gukoresha umuti cyangwa ifumbire mu murima runaka."
+    },
+    {
+      "id": "RAB_PULSES_OIL",
+      "organization": "RAB",
+      "title": "Pulses and Oil Crops Program",
+      "url": "https://www.rab.gov.rw/rw/agriculture-development/crop-innovation-tech-transfer",
+      "crops": ["Ibishyimbo", "Soya", "Amashaza", "Ubunyobwa", "Izuba"],
+      "facts": [
+        "RAB ikora ubushakashatsi ku bwoko bw'ibishyimbo, soya, amashaza, ubunyobwa n'izuba.",
+        "Intego z'ubushakashatsi zirimo kongera umusaruro, kwera hakiri kare, kwihanganira indwara n'udukoko no kunoza intungamubiri."
+      ]
+    },
+    {
+      "id": "RAB_ROOTS_TUBERS",
+      "organization": "RAB",
+      "title": "Roots and Tubers Program",
+      "url": "https://www.rab.gov.rw/rw/amakuru-1?cHash=7f36faa29f0503bf13408e15cb62d418&tx_news_pi1%5Baction%5D=detail&tx_news_pi1%5Bcontroller%5D=News&tx_news_pi1%5Bnews%5D=29254",
+      "crops": ["Imyumbati", "Ibirayi", "Ibijumba", "Amateke"],
+      "facts": [
+        "RAB ikora ubushakashatsi no kugeza ikoranabuhanga ku bahinzi b'imyumbati, ibirayi n'ibijumba.",
+        "Ibikorwa by'iyi porogaramu birimo ubwoko bushya, guhangana n'indwara n'udukoko, uburyo bwiza bwo kwita ku bihingwa, imbuto z'indobanure, kubika umusaruro no kongera agaciro kawo."
+      ]
+    },
+    {
+      "id": "RAB_HORTICULTURE",
+      "organization": "RAB",
+      "title": "Horticulture Program",
+      "url": "https://www.rab.gov.rw/agriculture-development/crop-innovation-tech-transfer",
+      "crops": ["Inyanya", "Ibitunguru", "Amashu", "Karoti", "Imbuto n'imboga"],
+      "facts": [
+        "RAB ifite porogaramu y'ubushakashatsi no gukwirakwiza ikoranabuhanga ku bihingwa by'imboga n'imbuto."
+      ],
+      "limits": "Iyi nyandiko rusange ntitanga ibipimo by'ifumbire cyangwa gahunda yo gutera kuri buri gihingwa."
+    },
+    {
+      "id": "RAB_CROP_PROTECTION",
+      "organization": "RAB",
+      "title": "Crop Protection Program",
+      "url": "https://www.rab.gov.rw/1-1/news/crop-protection-program",
+      "facts": [
+        "RAB ikurikirana indwara n'udukoko byibasira ibihingwa by'ingenzi.",
+        "RAB ihugura abakozi b'ubujyanama bw'ubuhinzi kandi ikora ingendo zo gusura imirima.",
+        "Kumenya neza ikibazo no kugikurikirana ni ingenzi mbere yo guhitamo uburyo bwo kukirwanya."
+      ]
+    },
+    {
+      "id": "RAB_RWASIS",
+      "organization": "RAB",
+      "title": "Rwanda Digital Soil Information System (RwaSIS)",
+      "url": "https://rwasis.rab.gov.rw/",
+      "related_article": "https://www.rab.gov.rw/1-1/news-details/rab-launches-rwanda-digital-soil-information-system-to-improve-agricultural-productivity",
+      "facts": [
+        "RwaSIS itanga amakuru ajyanye n'imiterere y'ubutaka, ibihingwa bibukwiriye, ibyago by'isuri n'inama ku ifumbire na lime.",
+        "Inama y'ifumbire igomba gushingira ku makuru y'ubutaka bw'ahantu runaka; ntibikwiye gutanga igipimo kimwe ku butaka bwose.",
+        "RAB yavuze ko igihe yatangazaga amakuru yo gutangiza RwaSIS, ibizamini bimwe by'ibigori, ingano, imyumbati n'ibishyimbo byari bikiri gukorwa, mu gihe iby'ibirayi n'umuceri byari byarangiye."
+      ]
+    },
+    {
+      "id": "RAB_ANNUAL_2023_24",
+      "organization": "RAB",
+      "title": "RAB Annual Report 2023-2024",
+      "url": "https://www.rab.gov.rw/fileadmin/user_upload/RAB/Publications/Reports/RAB_Annual_2023-24.pdf",
+      "facts": [
+        "Raporo ivuga ku mahugurwa yo kumenya no gukurikirana Fall Armyworm, Integrated Pest Management no gukoresha imiti mu buryo butekanye."
+      ],
+      "limits": "Raporo ni iy'umwaka wa 2023-2024; ntigomba kwitiranywa n'amabwiriza mashya ya 2026."
+    }
+  ],
+  "assistant_rules": [
+    "Subiza mu Kinyarwanda cyumvikana.",
+    "Tandukanya ibimenyetso bigaragara, ibyo umuhinzi yavuze n'indwara zikekwa.",
+    "Ntukemeze indwara ukoresheje ifoto imwe gusa.",
+    "Ntuhimbe amazina y'imiti, ingano yayo, ibipimo by'ifumbire cyangwa intera yo gutera.",
+    "Ku kibazo gisaba amakuru y'ubutaka, saba amakuru y'aho umurima uri cyangwa koresha RwaSIS aho bishoboka.",
+    "Vuga umwaka w'inyandiko cyangwa imibare igihe ari ingenzi.",
+    "Baza ikibazo kimwe cy'ingenzi igihe amakuru adahagije.",
+    "Ku kibazo gikomeye cyangwa gikomeje gukwira, ohereza umuhinzi ku muhinzi-mworozi w'umwuga cyangwa RAB."
+  ]
+}
