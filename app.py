@@ -1,5 +1,6 @@
 import os
 import time
+import json
 import gradio as gr
 from google import genai
 
@@ -58,6 +59,31 @@ UBURYO BWO GUSUBIZA:
 - Tanga icyo umuhinzi yakora ubu n'igihe yakwiyambaza agronome/RAB igihe ari ngombwa.
 """
 
+
+# Soma ubumenyi bw'ubuhinzi bwashyizwe muri knowledge_base.json.
+KNOWLEDGE_BASE = {}
+try:
+    with open("knowledge_base.json", "r", encoding="utf-8") as kb_file:
+        KNOWLEDGE_BASE = json.load(kb_file)
+except Exception as kb_error:
+    print(f"AgriNova knowledge base load warning: {kb_error}")
+
+def get_knowledge_context():
+    """Tegura incamake y'ubumenyi n'amasoko yayo yo guha Gemini."""
+    if not KNOWLEDGE_BASE:
+        return "Nta knowledge base yabonetse; ntuhimbe amakuru yihariye."
+    lines = [KNOWLEDGE_BASE.get("title", "AgriNova agriculture knowledge")]
+    lines.append(KNOWLEDGE_BASE.get("notice", ""))
+    for source in KNOWLEDGE_BASE.get("sources", []):
+        lines.append(f"ISOKO: {source.get('organization', 'RAB')} — {source.get('title', '')}")
+        lines.append(f"URL: {source.get('url', '')}")
+        for fact in source.get("facts", []):
+            lines.append(f"- {fact}")
+        if source.get("limits"):
+            lines.append(f"IMBOGAMIZI: {source['limits']}")
+    lines.append("AMATEGEKO: " + " | ".join(KNOWLEDGE_BASE.get("assistant_rules", [])))
+    return "\n".join(line for line in lines if line)
+
 def ganira(history, message, igihingwa, akarere, ifoto):
     history = history or []
     if not message or not message.strip():
@@ -91,6 +117,9 @@ def ganira(history, message, igihingwa, akarere, ifoto):
             transcript.append(f"{role}: {item['content']}")
         context = "\n".join(transcript[-12:])
         prompt = f"""{SYSTEM_PROMPT}
+
+UBUMENYI BWEMEJWE N'AMASOKO YA RAB (koresha gusa ibikenewe ku kibazo):
+{get_knowledge_context()}
 
 Igihingwa cyatoranyijwe: {igihingwa}
 Akarere/Umurenge: {akarere or 'Ntabwo kavuzwe'}
