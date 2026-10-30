@@ -170,7 +170,7 @@ with gr.Blocks(title="AgriNova AI") as demo:
             ["Ibigori","Ibishyimbo","Ibirayi","Umuceri","Imyumbati","Ibindi"],
             label="Igihingwa", value="Ibigori"
         )
-        akarere = gr.Textbox(label="Akarere / Umurenge", placeholder="Urugero: Huye")
+        akarere = gr.Textbox(label="Akarere / Umurenge", placeholder="Andika akarere cyangwa umurenge (si ngombwa)")
     ifoto = gr.Image(label="Ifoto y'igihingwa (ushobora kuyishyiraho mbere yo gutangira)", type="pil")
     ibiganiro = gr.Chatbot(label="Ikiganiro na AgriNova AI", height=420)
     state = gr.State([])
