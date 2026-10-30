@@ -55,10 +55,19 @@ UBURYO BWO GUSUBIZA:
 - Ntukavuge akarere cyangwa umurenge utavuzwe n'umuhinzi cyangwa utatoranyijwe muri porogaramu. Niba akarere katavuzwe, vuga ko katavuzwe; ntukihimbire Huye.
 - Ntugire inama rusange yo gutwika amababi cyangwa ibisigazwa by'ibihingwa. Saba kubanza kugisha inama agronome ku buryo bwizewe bwo kubikuraho no kubijugunya.
 - Ntugire inama yo gukoresha fungicide, pesticide cyangwa ifumbire runaka utabanje kumenya neza ikibazo n'amabwiriza yemewe. Ntutange urugero rw'umuti nk'aho ari wo ukwiye.
-- Tanga ingamba zidateje ibyago: kugenzura niba ibimenyetso biri ku biti byinshi, kwirinda gukorera mu murima igihe amababi atose, no kwegera agronome/RAB niba ikibazo gikomeje gukwira.
-- Tanga icyo umuhinzi yakora ubu n'igihe yakwiyambaza agronome/RAB igihe ari ngombwa.
-"""
+- Tanga ingamba zidateje ibyago: kugenzura niba ibimenyetso biri ku biti byinshi, no kwegera agronome/RAB niba ikibazo gikomeje gukwira.
 
+AMATEGEKO YO KUGARAGAZA INKOMOKO N'URWEGO RW'ICYIZERE:
+- Buri gisubizo kigomba kurangira n'agace gato gafite imitwe itatu:
+  "Inkomoko y'amakuru:", "Urwego rw'amakuru:", na "Icyitonderwa:".
+- Mu "Inkomoko y'amakuru", vuga gusa inyandiko iri muri KNOWLEDGE BASE koko kandi ifitanye isano n'igisubizo. Tanga izina ry'inyandiko n'umuryango wayitangaje. Ntuhimbe URL, umutwe w'inyandiko cyangwa ngo uvuge ko RAB/NISR yemeje ikintu kitanditse mu isoko.
+- Niba nta nyandiko yihariye muri KNOWLEDGE BASE ishyigikira igisubizo, andika neza uti: "Nta nyandiko yihariye ya RAB/NISR yemeza iki gisubizo muri data dufite; ni inama rusange yatanzwe na AI."
+- "Urwego rw'amakuru" ntirube amanota cyangwa ijanisha rihimbwe. Koresha kimwe muri ibi:
+  "Rishingiye ku nyandiko yemewe yavuzwe" cyangwa "Ruracyakeneye kugenzurwa n'umukozi w'ubuhinzi".
+- Niba isoko rivuga gusa ko RAB ikora ubushakashatsi ku ngingo, ntukaryerekane nk'aho ryemeje ibimenyetso cyangwa umuti wihariye.
+- "Icyitonderwa" gisobanure niba ari amakuru rusange, niba atari isuzuma ry'umurima, cyangwa niba bikwiye kugisha inama agronome.
+- Ntukagaragaze Gemini nk'isoko ry'ubumenyi; Gemini ni ikoranabuhanga ryatanze igisubizo, si isoko y'ukuri.
+"""
 
 # Soma ubumenyi bw'ubuhinzi bwashyizwe muri knowledge_base.json.
 KNOWLEDGE_BASE = {}
@@ -90,7 +99,6 @@ def ganira(history, message, igihingwa, akarere, ifoto):
         return history, history, ""
 
     # Igisubizo gihamye ku kibazo rusange cy'igihe ibigori bimara ngo byere.
-    # Ibi birinda Gemini gutanga imibare idafite isoko cyangwa kwihimbira akarere.
     ikibazo_gito = message.lower()
     amagambo_yigihe = ("bimara igihe", "igihe bimara", "ngo byere", "igihe ibigori", "byera ryari")
     ni_ikibazo_cyigihe = any(ijambo in ikibazo_gito for ijambo in amagambo_yigihe)
@@ -102,7 +110,10 @@ def ganira(history, message, igihingwa, akarere, ifoto):
             "Ibigori ntibyera mu gihe kimwe byose. Igihe bimara giterwa n'ubwoko bw'imbuto, "
             "ikirere n'uko byitaweho. Sinakwemeza umubare w'iminsi cyangwa amezi ntazi ubwoko "
             "bw'imbuto wateye.\n\n"
-            "Waba uzi izina ry'imbuto wateye, cyangwa ufite ifoto y'ipaki yayo?"
+            "Waba uzi izina ry'imbuto wateye, cyangwa ufite ifoto y'ipaki yayo?\n\n"
+            "**Inkomoko y'amakuru:** Nta nyandiko yihariye ya RAB/NISR yemeza iki gisubizo muri data dufite; ni inama rusange yatanzwe na AI.\n"
+            "**Urwego rw'amakuru:** Ruracyakeneye kugenzurwa n'umukozi w'ubuhinzi.\n"
+            "**Icyitonderwa:** Igihe cyo kwera gitandukana bitewe n'ubwoko bw'imbuto n'imiterere y'aho zihingwa."
         )
         updated = history + [{"role":"user","content":message},{"role":"assistant","content":answer}]
         return updated, updated, ""
@@ -133,12 +144,12 @@ Ubutumwa bushya bw'umuhinzi:
 Subiza ukurikije amateka y'ikiganiro, kandi niba wabajije umuhinzi ikibazo, koresha igisubizo aguhaye.
 Ibisubizo bya AI byabanje bishobora kuba birimo amakosa; ntukabifate nk'amakuru y'ukuri.
 Niba ikibazo ari ukumenya igihe ibigori bimara ngo byere kandi ubwoko bw'imbuto butavuzwe,
-ntutange umubare. Baza izina ry'imbuto cyangwa usabe ifoto y'ipaki yayo."""
+ntutange umubare. Baza izina ry'imbuto cyangwa usabe ifoto y'ipaki yayo.
+Wibuke kurangiza igisubizo n'imitwe itatu isabwa: Inkomoko y'amakuru, Urwego rw'amakuru, Icyitonderwa."""
+
         contents = [prompt]
         if ifoto is not None and not history:
             contents.append(ifoto)
-        # Ongera ugerageze mu gihe Gemini ihuye n'ubwinshi bw'abayikoresha.
-        # Gutegereza 1, 2, na 4 seconds bigabanya gusubiramo request nyinshi icyarimwe.
         response = None
         last_error = None
         for attempt in range(4):
