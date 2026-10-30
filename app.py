@@ -233,9 +233,9 @@ Wibuke kurangiza igisubizo n'imitwe itatu isabwa: Inkomoko y'amakuru, Urwego rw'
         if ifoto is not None:
             contents.append(ifoto)
         # Igihe ntarengwa cya request ni amasegonda 20; ntitugumisha umuhinzi ategereje retries nyinshi.
-        # Koresha model ya Gemini 2.5 Flash yigeze gukora neza muri iyi project.
+        # Koresha model nshya ya Gemini Flash iboneka ku bakoresha bashya.
         response = client.models.generate_content(
-            model="gemini-2.5-flash",
+            model="gemini-3.8-flash",
             contents=contents
         )
         answer = response.text or "Ntabwo nabashije kubona igisubizo. Ongera ugerageze."
