@@ -20,7 +20,13 @@
       "organization": "RAB",
       "title": "Cereals Program",
       "url": "https://www.rab.gov.rw/rw/amakuru-1/cereals-program",
-      "crops": ["Ibigori", "Umuceri", "Ingano", "Amasaka", "Barley"],
+      "crops": [
+        "Ibigori",
+        "Umuceri",
+        "Ingano",
+        "Amasaka",
+        "Barley"
+      ],
       "facts": [
         "Porogaramu y'ibinyampeke ya RAB ikora ubushakashatsi ku bigori, umuceri, ingano, barley n'amasaka.",
         "Ubushakashatsi ku bigori bwibanda no ku kwihanganira amapfa, Fall Armyworm, Maize Lethal Necrosis n'indwara zimwe zo ku mababi."
@@ -32,7 +38,13 @@
       "organization": "RAB",
       "title": "Pulses and Oil Crops Program",
       "url": "https://www.rab.gov.rw/rw/agriculture-development/crop-innovation-tech-transfer",
-      "crops": ["Ibishyimbo", "Soya", "Amashaza", "Ubunyobwa", "Izuba"],
+      "crops": [
+        "Ibishyimbo",
+        "Soya",
+        "Amashaza",
+        "Ubunyobwa",
+        "Izuba"
+      ],
       "facts": [
         "RAB ikora ubushakashatsi ku bwoko bw'ibishyimbo, soya, amashaza, ubunyobwa n'izuba.",
         "Intego z'ubushakashatsi zirimo kongera umusaruro, kwera hakiri kare, kwihanganira indwara n'udukoko no kunoza intungamubiri."
@@ -43,7 +55,12 @@
       "organization": "RAB",
       "title": "Roots and Tubers Program",
       "url": "https://www.rab.gov.rw/rw/amakuru-1?cHash=7f36faa29f0503bf13408e15cb62d418&tx_news_pi1%5Baction%5D=detail&tx_news_pi1%5Bcontroller%5D=News&tx_news_pi1%5Bnews%5D=29254",
-      "crops": ["Imyumbati", "Ibirayi", "Ibijumba", "Amateke"],
+      "crops": [
+        "Imyumbati",
+        "Ibirayi",
+        "Ibijumba",
+        "Amateke"
+      ],
       "facts": [
         "RAB ikora ubushakashatsi no kugeza ikoranabuhanga ku bahinzi b'imyumbati, ibirayi n'ibijumba.",
         "Ibikorwa by'iyi porogaramu birimo ubwoko bushya, guhangana n'indwara n'udukoko, uburyo bwiza bwo kwita ku bihingwa, imbuto z'indobanure, kubika umusaruro no kongera agaciro kawo."
@@ -54,7 +71,13 @@
       "organization": "RAB",
       "title": "Horticulture Program",
       "url": "https://www.rab.gov.rw/agriculture-development/crop-innovation-tech-transfer",
-      "crops": ["Inyanya", "Ibitunguru", "Amashu", "Karoti", "Imbuto n'imboga"],
+      "crops": [
+        "Inyanya",
+        "Ibitunguru",
+        "Amashu",
+        "Karoti",
+        "Imbuto n'imboga"
+      ],
       "facts": [
         "RAB ifite porogaramu y'ubushakashatsi no gukwirakwiza ikoranabuhanga ku bihingwa by'imboga n'imbuto."
       ],
@@ -92,6 +115,33 @@
         "Raporo ivuga ku mahugurwa yo kumenya no gukurikirana Fall Armyworm, Integrated Pest Management no gukoresha imiti mu buryo butekanye."
       ],
       "limits": "Raporo ni iy'umwaka wa 2023-2024; ntigomba kwitiranywa n'amabwiriza mashya ya 2026."
+    },
+    {
+      "id": "RAB_AGENDA_AGRICole_2023",
+      "organization": "Minisiteri y'Ubuhinzi n'Ubworozi na RAB",
+      "title": "Agenda Agricole 2023 — Uburo bwo kurinda no kurwanya indwara z'ibigori",
+      "url": "https://www.rab.gov.rw/fileadmin/user_upload/RAB/Publications/Policies_and_strategies/Agenda_Agricole_2023.pdf",
+      "crops": [
+        "Ibigori"
+      ],
+      "facts": [
+        "Inyandiko isobanura ko indwara ya Maize Streak Virus ishobora kugaragazwa n'imirongo y'amabara yegeranye ikurikirana imigozi y'ibibabi, kandi ibimenyetso bishobora gutangirira ku mababi yo hejuru bikamanuka.",
+        "Inyandiko ivuga ingamba zirimo gukoresha imbuto zifite icyemezo cy'ubuziranenge, gusimburanya ibigori n'ibihingwa bitari ibinyampeke, no kugisha inama ku gukura no gucunga ibihingwa byagaragaje ibimenyetso."
+      ],
+      "limits": "Kuba amababi ari umuhondo gusa ntibihagije kwemeza Maize Streak Virus; hagomba kurebwa imirongo iranga iyo ndwara n'ibindi bimenyetso. Inyandiko ntitanga igipimo cy'ifumbire cyo gukoresha ku kibazo cyose cy'umuhondo."
+    },
+    {
+      "id": "RAB_ANNUAL_2019_2020_MAIZE",
+      "organization": "Rwanda Agriculture and Animal Resources Development Board (RAB)",
+      "title": "RAB Annual Report 2019-2020 — Seasonal maize cropping monitoring",
+      "url": "https://www.rab.gov.rw/fileadmin/user_upload/RAB/Publications/Reports/RAB_annual_2019-2020.pdf",
+      "crops": [
+        "Ibigori"
+      ],
+      "facts": [
+        "RAB yanditse ko imvura nyinshi mu gihe cy'ihinga ishobora gutuma azote yo mu butaka yogwa ikagenda (nitrogen leaching), cyane cyane iyo imicungire y'ibyatsi n'ubutaka idakozwe neza; ibyo byagize uruhare mu kugabanuka kwa azote mu mirima imwe y'ibigori yakurikiranwe."
+      ],
+      "limits": "Iyi raporo ivuga ku bihe n'imirima byakurikiranywe muri 2019-2020; ntihamya ko buri kibabi cy'umuhondo giterwa no kubura azote kandi ntitanga igipimo rusange cy'ifumbire."
     }
   ],
   "assistant_rules": [
