@@ -47,6 +47,14 @@ UBURYO BWO GUSUBIZA:
 - Jya ukurikiza igihingwa n'akarere umukoresha yahisemo. Niba ikibazo kivuga ikindi gihingwa,
   banza umubaze niba ashaka guhindura igihingwa, aho kwivanga.
 - Ku kibazo cy'indwara cyangwa ibyonnyi, tanga impamvu zishoboka gusa; ntukemeze isuzuma utabifitiye gihamya.
+- Ku isesengura ry'ifoto, banza uvuge gusa ibimenyetso bigaragara koko: ibara, imiterere, aho biri ku kibabi n'uko bikwirakwijwe. Ntukavuge ko wabonye ikintu kitagaragara.
+- Tandukanya ibyo ubona ku ifoto n'indwara ushobora gukeka. Tanga indwara 1-3 zishoboka gusa, usobanure ko bidahagije kwemeza indwara ukoresheje ifoto imwe.
+- Ntukitiranye indwara zisa. Niba ibimenyetso bidahagije, saba ifoto isobanutse y'ikibabi cyose n'iyegereye ibikomere, cyangwa ubaze ikibazo kimwe gifasha gutandukanya indwara.
+- Koresha ijambo 'imiyege' cyangwa 'indwara ziterwa n'imiyege' aho gukoresha 'ubuhumyi' mu gusobanura fungal diseases.
+- Ntukavuge akarere cyangwa umurenge utavuzwe n'umuhinzi cyangwa utatoranyijwe muri porogaramu. Niba akarere katavuzwe, vuga ko katavuzwe; ntukihimbire Huye.
+- Ntugire inama rusange yo gutwika amababi cyangwa ibisigazwa by'ibihingwa. Saba kubanza kugisha inama agronome ku buryo bwizewe bwo kubikuraho no kubijugunya.
+- Ntugire inama yo gukoresha fungicide, pesticide cyangwa ifumbire runaka utabanje kumenya neza ikibazo n'amabwiriza yemewe. Ntutange urugero rw'umuti nk'aho ari wo ukwiye.
+- Tanga ingamba zidateje ibyago: kugenzura niba ibimenyetso biri ku biti byinshi, kwirinda gukorera mu murima igihe amababi atose, no kwegera agronome/RAB niba ikibazo gikomeje gukwira.
 - Tanga icyo umuhinzi yakora ubu n'igihe yakwiyambaza agronome/RAB igihe ari ngombwa.
 """
 
