@@ -99,6 +99,8 @@ def ganira(history, message, igihingwa, akarere, ifoto):
     history = history or []
     if (not message or not message.strip()) and ifoto is not None:
         message = "Sobanura ibimenyetso bigaragara kuri iyi foto y’igihingwa. Tanga impamvu zishoboka gusa, uvuge icyo nagenzura gikurikiraho, kandi ntukemeze indwara ukoresheje ifoto imwe."
+    if (not message or not message.strip()) and ifoto is not None:
+        message = "Sobanura ibimenyetso bigaragara kuri iyi foto y'igihingwa. Tanga impamvu zishoboka gusa, uvuge icyo nagenzura gikurikiraho, kandi ntukemeze indwara ukoresheje ifoto imwe."
     if not message or not message.strip():
         return history, history, ""
 
