@@ -232,32 +232,34 @@ Wibuke kurangiza igisubizo n'imitwe itatu isabwa: Inkomoko y'amakuru, Urwego rw'
         # Ibi bituma umuhinzi ashobora kongeramo ifoto mu butumwa bukurikiyeho.
         if ifoto is not None:
             contents.append(ifoto)
-        # Igihe ntarengwa cya request ni amasegonda 20; ntitugumisha umuhinzi ategereje retries nyinshi.
-        # Koresha model nshya ya Gemini Flash iboneka ku bakoresha bashya.
+        # Koresha model nyamukuru, hanyuma ugerageze izindi model niba Google 503/429.
         response = None
-        last_error = None
-        # Ongera ugerageze mu gihe Google ihuye n'ubwinshi bw'ibyifuzo cyangwa rate limit.
-        for attempt in range(3):
-            try:
-                response = client.models.generate_content(
-                    model="gemini-3.8-flash",
-                    contents=contents
-                )
+        model_errors = []
+        for model_name in ("gemini-3.8-flash", "gemini-3.6-flash", "gemini-3.5-flash-lite"):
+            for attempt in range(2):
+                try:
+                    response = client.models.generate_content(
+                        model=model_name,
+                        contents=contents
+                    )
+                    print(f"AgriNova Gemini success: {model_name}")
+                    break
+                except Exception as request_error:
+                    error_text = str(request_error).lower()
+                    retryable = any(term in error_text for term in (
+                        "503", "unavailable", "high demand", "429",
+                        "resource_exhausted", "rate limit", "500", "502", "504", "temporarily"
+                    ))
+                    model_errors.append(f"{model_name}: {type(request_error).__name__}: {request_error}")
+                    print(f"AgriNova Gemini model error: {model_errors[-1]}")
+                    if not retryable:
+                        raise
+                    if attempt == 0:
+                        time.sleep(2)
+            if response is not None:
                 break
-            except Exception as request_error:
-                last_error = request_error
-                request_error_text = str(request_error).lower()
-                retryable = any(term in request_error_text for term in (
-                    "503", "unavailable", "high demand",
-                    "429", "resource_exhausted", "rate limit",
-                    "500", "502", "504", "temporarily"
-                ))
-                if not retryable or attempt == 2:
-                    raise
-                time.sleep(2 * (attempt + 1))
-
         if response is None:
-            raise last_error or RuntimeError("Gemini ntiyagaruye igisubizo.")
+            raise RuntimeError("Gemini model zose zanze: " + " | ".join(model_errors))
         answer = response.text or "Ntabwo nabashije kubona igisubizo. Ongera ugerageze."
     except Exception as e:
         print(f"AgriNova Gemini error: {type(e).__name__}: {e}")
