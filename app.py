@@ -200,7 +200,7 @@ def ganira(history, message, igihingwa, akarere, ifoto):
     try:
         client = genai.Client(
             api_key=GEMINI_API_KEY,
-            http_options=types.HttpOptions(timeout=20000)
+            http_options=types.HttpOptions(timeout=60000)
         )
         transcript = []
         for item in history:
@@ -254,9 +254,14 @@ Wibuke kurangiza igisubizo n'imitwe itatu isabwa: Inkomoko y'amakuru, Urwego rw'
                 "Tegereza akanya gato wongere ugerageze; ntukeneye gutangira ikiganiro bundi bushya."
             )
         else:
+            # Erekana ubwoko bw'ikosa ariko uhishe API key.
+            error_name = type(e).__name__
+            error_detail = str(e).replace(GEMINI_API_KEY or "__NO_KEY__", "[HIDDEN_API_KEY]")
             answer = (
                 "Habaye ikibazo mu kubona igisubizo cya AI. "
-                "Ongera ugerageze nyuma y'akanya. Niba bikomeje, tubimenyeshe."
+                f"Ubwoko bw'ikosa: {error_name}. "
+                f"Ibisobanuro: {error_detail[:500]} "
+                "Reba Render Logs kugira ngo tumenye impamvu nyayo."
             )
     updated = history + [{"role":"user","content":message},{"role":"assistant","content":answer}]
     return updated, updated, ""
@@ -288,7 +293,7 @@ footer {display:none!important}
 """
 
 
-with gr.Blocks(title="AgriNova AI — Umufasha w'Ubuhinzi", theme=gr.themes.Soft(primary_hue="green"), css=CSS) as demo:
+with gr.Blocks(title="AgriNova AI — Umufasha w'Ubuhinzi") as demo:
     with gr.Row(elem_id="app-shell"):
         with gr.Column(scale=1, min_width=245, elem_id="sidebar"):
             gr.HTML("""
@@ -360,4 +365,4 @@ with gr.Blocks(title="AgriNova AI — Umufasha w'Ubuhinzi", theme=gr.themes.Soft
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", "10000"))
-    demo.launch(server_name="0.0.0.0", server_port=port)
+    demo.launch(server_name="0.0.0.0", server_port=port, theme=gr.themes.Soft(primary_hue="green"), css=CSS)
