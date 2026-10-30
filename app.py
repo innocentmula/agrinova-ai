@@ -97,7 +97,7 @@ def ganira(history, message, igihingwa, akarere, ifoto):
     indamukanyo = message.lower().strip().strip(" .,!?;:")
     amagambo_indamukanyo = {
         "mwiriwe", "mwaramutse", "muraho", "bite", "amakuru", "mwaramutseho",
-        "mwiriweho", "hello", "hi", "good morning", "good afternoon"
+        "mwiriweho", "mwiriwwe", "mwiriwweho", "hello", "hi", "good morning", "good afternoon"
     }
     if indamukanyo in amagambo_indamukanyo:
         answer = (
